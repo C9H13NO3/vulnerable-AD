@@ -142,7 +142,7 @@ function VulnAD-Kerberoasting {
     }
 }
 function VulnAD-ASREPRoasting {
-    for ($i=1; $i -le (Get-Random -Maximum 6); $i=$i+1 ) {
+    for ($i=1; $i -le (Get-Random -Minimum 10 -Maximum 25); $i=$i+1 ) {
         $randomuser = (VulnAD-GetRandom -InputList $Global:CreatedUsers)
         $password = VulnAD-GetRandom -InputList $Global:BadPasswords;
         Set-AdAccountPassword -Identity $randomuser -Reset -NewPassword (ConvertTo-SecureString $password -AsPlainText -Force)
@@ -151,7 +151,7 @@ function VulnAD-ASREPRoasting {
     }
 }
 function VulnAD-DnsAdmins {
-    for ($i=1; $i -le (Get-Random -Maximum 6); $i=$i+1 ) {
+    for ($i=1; $i -le (Get-Random -Minimum 10 -Maximum 25); $i=$i+1 ) {
         $randomuser = (VulnAD-GetRandom -InputList $Global:CreatedUsers)
         Add-ADGroupMember -Identity "DnsAdmins" -Members $randomuser
         Write-Info "DnsAdmins : $randomuser"
@@ -161,7 +161,7 @@ function VulnAD-DnsAdmins {
     Write-Info "DnsAdmins Nested Group : $randomg"
 }
 function VulnAD-PwdInObjectDescription {
-    for ($i=1; $i -le (Get-Random -Maximum 6); $i=$i+1 ) {
+    for ($i=1; $i -le (Get-Random -Minimum 10 -Maximum 25); $i=$i+1 ) {
         $randomuser = (VulnAD-GetRandom -InputList $Global:CreatedUsers)
         $password = ([System.Web.Security.Membership]::GeneratePassword(12,2))
         Set-AdAccountPassword -Identity $randomuser -Reset -NewPassword (ConvertTo-SecureString $password -AsPlainText -Force)
@@ -170,7 +170,7 @@ function VulnAD-PwdInObjectDescription {
     }
 }
 function VulnAD-DefaultPassword {
-    for ($i=1; $i -le (Get-Random -Maximum 5); $i=$i+1 ) {
+    for ($i=1; $i -le (Get-Random -Minimum 10 -Maximum 25); $i=$i+1 ) {
         $randomuser = (VulnAD-GetRandom -InputList $Global:CreatedUsers)
         $password = "Changeme123!";
         Set-AdAccountPassword -Identity $randomuser -Reset -NewPassword (ConvertTo-SecureString $password -AsPlainText -Force)
@@ -181,7 +181,7 @@ function VulnAD-DefaultPassword {
 }
 function VulnAD-PasswordSpraying {
     $same_password = "ncc1701";
-    for ($i=1; $i -le (Get-Random -Maximum 12); $i=$i+1 ) {
+    for ($i=1; $i -le (Get-Random -Minimum 10 -Maximum 25); $i=$i+1 ) {
         $randomuser = (VulnAD-GetRandom -InputList $Global:CreatedUsers)
         Set-AdAccountPassword -Identity $randomuser -Reset -NewPassword (ConvertTo-SecureString $same_password -AsPlainText -Force)
         Set-ADUser $randomuser -Description "Shared User"
@@ -189,7 +189,7 @@ function VulnAD-PasswordSpraying {
     }
 }
 function VulnAD-DCSync {
-    for ($i=1; $i -le (Get-Random -Maximum 6); $i=$i+1 ) {
+    for ($i=1; $i -le (Get-Random -Minimum 10 -Maximum 25); $i=$i+1 ) {
         $ADObject = [ADSI]("LDAP://" + (Get-ADDomain $Global:Domain).DistinguishedName)
         $randomuser = (VulnAD-GetRandom -InputList $Global:CreatedUsers)
         $sid = (Get-ADUser -Identity $randomuser).sid
@@ -216,7 +216,7 @@ function VulnAD-DisableSMBSigning {
 }
 function Invoke-VulnAD {
     Param(
-        [int]$UsersLimit = 100,
+        [int]$UsersLimit = 1000,
         [Parameter(Mandatory=$True,ValueFromPipeline=$True,ValueFromPipelineByPropertyName=$True,Position=1)]
         [ValidateNotNullOrEmpty()]
         [System.String]
