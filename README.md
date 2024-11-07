@@ -35,5 +35,5 @@ Create a vulnerable active directory that's allowing you to test most of active 
 # if you already installed Active Directory, just run the script !
 set-execution policy bypass
 IEX((new-object net.webclient).downloadstring("https://raw.githubusercontent.com/wazehell/vulnerable-AD/master/vulnad.ps1"));
-Invoke-VulnAD -UsersLimit 100 -DomainName "cs.org"
+Invoke-VulnAD -UsersLimit 1000 -DomainName "LUDUS.DOMAIN"
 ```
